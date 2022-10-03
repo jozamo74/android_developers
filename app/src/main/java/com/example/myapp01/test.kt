@@ -46,6 +46,35 @@ fun test(){
 
     val p = Person("José", 47)
     val d = Developer("Paco", 60)
+
+    val sum: (Int, Int) -> Int = {x, y -> x + y}
+    val sum2 = {x: Int, y: Int -> x + y}
+    
+    val listOfInt = listOf(1, 2, 3, 15, 7, 6, 4)
+    val result = listOfInt.filter { it % 2 == 0 }
+        .map { it.toString() }
+        .sorted()
+
+    val mutable = mutableListOf(1,3,4,5)
+    mutable.add(10)
+
+    val empty =  emptyList<Int>()
+
+    // No permite elementos repetidos
+    val set = setOf(3,4,3,5,8)
+
+    val map = mapOf(Pair("a", 1), Pair("b", 2))
+    for ((key, value) in map){
+        println("clave: $key, valor: $value")
+    }
+
+    //Para no estar realizando copias de las listas cada vez que tiene que realizar una operación
+    val result2 = listOfInt
+        .asSequence()
+        .filter { it % 2 == 0 }
+        .map { it.toString() }
+        .toList()
+
 }
 
 fun add(x: Int, y: Int): Int = x + y

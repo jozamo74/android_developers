@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapp01.MediaItem.*
 import com.example.myapp01.databinding.ViewMediaItemBinding
+import kotlin.properties.Delegates
 
 /****
  * Project: My app01
@@ -12,8 +13,16 @@ import com.example.myapp01.databinding.ViewMediaItemBinding
  * Created by José Zambrano Moya on 29/9/22 at 17:36
  * More info: zambranomoya74@gmail.com
  ****/
-class MediaAdapter(private val items: List<MediaItem>) :
+class MediaAdapter(
+    items: List<MediaItem> = emptyList(),
+    private val listener: (MediaItem) -> Unit
+) :
     RecyclerView.Adapter<MediaAdapter.ViewHolder>() {
+
+    var items: List<MediaItem> by Delegates.observable(items) { _, _, _ ->
+        notifyDataSetChanged()
+
+    }
 
 
     // Inflamos la vista
@@ -37,6 +46,10 @@ class MediaAdapter(private val items: List<MediaItem>) :
         val item = items[position]
         holder.bind(item)
 
+        //holder.itemView.setOnClickListener { listener.onClick(item) }
+        holder.itemView.setOnClickListener { listener(item) }
+
+
     }
 
 
@@ -48,7 +61,7 @@ class MediaAdapter(private val items: List<MediaItem>) :
         private val binding = ViewMediaItemBinding.bind(view)
 
         fun bind(mediaItem: MediaItem) {
-            with(binding){
+            with(binding) {
 
                 mediaTitle.text = mediaItem.title
                 mediaThumb.loadUrl(mediaItem.url)
@@ -56,10 +69,10 @@ class MediaAdapter(private val items: List<MediaItem>) :
                     Type.PHOTO -> View.GONE
                     Type.VIDEO -> View.VISIBLE
                 }
-                root.setOnClickListener {
+                /*root.setOnClickListener {
                     toast("Pulsado: ${mediaTitle.text}")
 
-                }
+                }*/
             }
 
 //            Glide
