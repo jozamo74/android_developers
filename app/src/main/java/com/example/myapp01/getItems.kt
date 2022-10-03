@@ -9,7 +9,14 @@ import com.example.myapp01.MediaItem.*
  * More info: zambranomoya74@gmail.com
  ****/
 
-fun getItems(): List<MediaItem> = listOf(
+fun getItems(): List<MediaItem> = (1..10).map {
+    MediaItem(
+        "Title $it",
+        "https://placekitten.com/200/200?image=$it",
+        if (it % 3 == 0) Type.VIDEO else Type.PHOTO
+    )
+}
+    /*listOf(
     MediaItem("Title 1", "https://placekitten.com/200/200?image=1", Type.PHOTO),
     MediaItem("Title 2", "https://placekitten.com/200/200?image=2", Type.PHOTO),
     MediaItem("Title 3", "https://placekitten.com/200/200?image=3", Type.PHOTO),
@@ -20,4 +27,4 @@ fun getItems(): List<MediaItem> = listOf(
     MediaItem("Title 8", "https://placekitten.com/200/200?image=8", Type.PHOTO),
     MediaItem("Title 9", "https://placekitten.com/200/200?image=9", Type.VIDEO),
     MediaItem("Title 10", "https://placekitten.com/200/200?image=10", Type.PHOTO)
-)
+)*/
