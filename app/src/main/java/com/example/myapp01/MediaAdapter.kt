@@ -1,14 +1,9 @@
 package com.example.myapp01
 
-import android.content.Context
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
+import com.example.myapp01.MediaItem.*
 import com.example.myapp01.databinding.ViewMediaItemBinding
 
 /****
@@ -25,6 +20,11 @@ class MediaAdapter(private val items: List<MediaItem>) :
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
 //        val view = LayoutInflater.from(parent.context)
 //            .inflate(R.layout.view_media_item, parent, false)
+
+        //1º forma de aplicar binding en el adapter
+        //val binding = ViewMediaItemBinding.inflate(LayoutInflater.from(parent.context))
+        //return ViewHolder(binding.root)
+
         val view = parent.inflater(R.layout.view_media_item)
         return ViewHolder(view)
     }
@@ -44,20 +44,29 @@ class MediaAdapter(private val items: List<MediaItem>) :
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
 
+        //2ª forma de aplicar binding en adapter
         private val binding = ViewMediaItemBinding.bind(view)
 
         fun bind(mediaItem: MediaItem) {
-            binding.mediaTitle.text = mediaItem.title
-            binding.mediaThumb.loadUrl(mediaItem.url)
+            with(binding){
+
+                mediaTitle.text = mediaItem.title
+                mediaThumb.loadUrl(mediaItem.url)
+                mediaVideoIndicator.visibility = when (mediaItem.type) {
+                    Type.PHOTO -> View.GONE
+                    Type.VIDEO -> View.VISIBLE
+                }
+                root.setOnClickListener {
+                    toast("Pulsado: ${mediaTitle.text}")
+
+                }
+            }
+
 //            Glide
 //                .with(binding.mediaThumb)
 //                .load(mediaItem.url)
 //                .into(binding.mediaThumb)
 
-            binding.item.setOnClickListener {
-                toast("Pulsado: ${binding.mediaTitle.text}")
-
-            }
 
         }
 

@@ -1,6 +1,8 @@
 package com.example.myapp01
 
+import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -34,4 +36,11 @@ fun ViewGroup.inflater(@LayoutRes layoutRes: Int): View {
 
 fun ImageView.loadUrl(url: String){
     Glide.with(this).load(url).into(this)
+}
+
+// inline en vez de hacer una llamada a la función
+// se sustituye esa llamada por el código que hay dentro de esa función
+inline fun <reified T: Activity> Context.startActivity() {
+    val intent = Intent(this, T::class.java)
+    startActivity(intent)
 }
