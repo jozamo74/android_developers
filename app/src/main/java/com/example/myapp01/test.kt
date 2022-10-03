@@ -63,7 +63,8 @@ fun test(){
     // No permite elementos repetidos
     val set = setOf(3,4,3,5,8)
 
-    val map = mapOf(Pair("a", 1), Pair("b", 2))
+    // "a" to 1 es función infix de Pair("b", 2)
+    val map = mapOf("a" to 1, Pair("b", 2))
     for ((key, value) in map){
         println("clave: $key, valor: $value")
     }
