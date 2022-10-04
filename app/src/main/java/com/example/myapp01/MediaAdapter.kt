@@ -13,9 +13,12 @@ import kotlin.properties.Delegates
  * Created by José Zambrano Moya on 29/9/22 at 17:36
  * More info: zambranomoya74@gmail.com
  ****/
+
+private typealias ListenerType = (MediaItem) -> Unit
+
 class MediaAdapter(
     items: List<MediaItem> = emptyList(),
-    private val listener: (MediaItem) -> Unit
+    private val listener: ListenerType
 ) :
     RecyclerView.Adapter<MediaAdapter.ViewHolder>() {
 
