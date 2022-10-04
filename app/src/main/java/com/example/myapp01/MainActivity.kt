@@ -71,6 +71,8 @@ class MainActivity : AppCompatActivity(), Logger{//, Listener  {
          mRecyclerView.layoutManager = GridLayoutManager(this, 2)
          mRecyclerView.adapter = mAdapter
      }*/
+
+
     private fun updateItems(filter: Int = R.id.filter_all) {
         GlobalScope.launch(Dispatchers.Main){
             binding.progress.visibility = View.VISIBLE
