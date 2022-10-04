@@ -2,25 +2,23 @@ package com.example.myapp01
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.provider.MediaStore.Audio.Media
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.Button
-import android.widget.TextView
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.myapp01.MediaItem.*
 import com.example.myapp01.databinding.ActivityMainBinding
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class MainActivity : AppCompatActivity(), Logger{//, Listener  {
 
     //override val tag: String = javaClass.simpleName
-    private lateinit var message: TextView
-    private lateinit var button: Button
+    //private lateinit var message: TextView
+    //private lateinit var button: Button
 
-    private val adapter by lazy { MediaAdapter(getItems()){ toast(it.title) } }
+    private val adapter = MediaAdapter{ toast(it.title) }
 
 
     //private lateinit var mRecyclerView: RecyclerView
@@ -48,8 +46,18 @@ class MainActivity : AppCompatActivity(), Logger{//, Listener  {
             toast(it.title)
         }*/
         binding.recycler.adapter = adapter
+        updateItems()
+        /*GlobalScope.launch(Dispatchers.Main) {
+            binding.progress.visibility = View.VISIBLE
+            adapter.items = withContext(Dispatchers.IO){
+                MediaProvider.getItems()
 
-        logD( "I'm here")
+            }
+            binding.progress.visibility = View.GONE
+        }*/
+
+
+        //logD( "I'm here")
 
     }
 
@@ -63,6 +71,24 @@ class MainActivity : AppCompatActivity(), Logger{//, Listener  {
          mRecyclerView.layoutManager = GridLayoutManager(this, 2)
          mRecyclerView.adapter = mAdapter
      }*/
+    private fun updateItems(filter: Int = R.id.filter_all) {
+        GlobalScope.launch(Dispatchers.Main){
+            binding.progress.visibility = View.VISIBLE
+            adapter.items = withContext(Dispatchers.IO) { getFilteredItem(filter) }
+            binding.progress.visibility = View.GONE
+        }
+    }
+
+    private fun getFilteredItem(filter: Int): List<MediaItem> {
+        return MediaProvider.getItems().let { media ->
+            when (filter) {
+                R.id.filter_all -> MediaProvider.getItems()
+                R.id.filter_photos -> media.filter { it.type == Type.PHOTO }
+                R.id.filter_videos -> media.filter { it.type == Type.VIDEO }
+                else -> emptyList()
+            }
+        }
+    }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.main, menu)
@@ -70,13 +96,7 @@ class MainActivity : AppCompatActivity(), Logger{//, Listener  {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        adapter.items = when (item.itemId) {
-            R.id.filter_all -> getItems()
-            R.id.filter_photos -> getItems().filter { it.type == Type.PHOTO }
-            R.id.filter_videos -> getItems().filter { it.type == Type.VIDEO }
-            else -> emptyList()
-
-        }
+        updateItems(item.itemId)
         return super.onOptionsItemSelected(item)
     }
 

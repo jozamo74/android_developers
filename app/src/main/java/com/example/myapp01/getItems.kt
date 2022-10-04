@@ -1,5 +1,6 @@
 package com.example.myapp01
 
+import androidx.annotation.WorkerThread
 import com.example.myapp01.MediaItem.*
 
 /****
@@ -8,13 +9,16 @@ import com.example.myapp01.MediaItem.*
  * Created by José Zambrano Moya on 29/9/22 at 18:06
  * More info: zambranomoya74@gmail.com
  ****/
-
-fun getItems(): List<MediaItem> = (1..10).map {
-    MediaItem(
-        "Title $it",
-        "https://placekitten.com/200/200?image=$it",
-        if (it % 3 == 0) Type.VIDEO else Type.PHOTO
-    )
+object MediaProvider {
+    @WorkerThread
+    fun getItems(): List<MediaItem> = (1..10).map {
+        Thread.sleep(200)
+        MediaItem(
+            "Title $it",
+            "https://placekitten.com/200/200?image=$it",
+            if (it % 3 == 0) Type.VIDEO else Type.PHOTO
+        )
+    }
 }
     /*listOf(
     MediaItem("Title 1", "https://placekitten.com/200/200?image=1", Type.PHOTO),

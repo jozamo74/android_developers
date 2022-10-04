@@ -76,6 +76,14 @@ fun test(){
         .map { it.toString() }
         .toList()
 
+    MyObject.x
+
 }
 
 fun add(x: Int, y: Int): Int = x + y
+
+object MyObject {
+    val x = 20
+    val y = 10
+}
+
