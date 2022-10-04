@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import androidx.lifecycle.lifecycleScope
 import com.example.myapp01.MediaItem.*
 import com.example.myapp01.databinding.ActivityMainBinding
 import kotlinx.coroutines.Dispatchers
@@ -74,7 +75,7 @@ class MainActivity : AppCompatActivity(), Logger{//, Listener  {
 
 
     private fun updateItems(filter: Int = R.id.filter_all) {
-        GlobalScope.launch(Dispatchers.Main){
+        lifecycleScope.launch{
             binding.progress.visibility = View.VISIBLE
             adapter.items = withContext(Dispatchers.IO) { getFilteredItem(filter) }
             binding.progress.visibility = View.GONE
