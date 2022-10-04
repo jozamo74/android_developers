@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.annotation.LayoutRes
+import androidx.core.os.bundleOf
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 
@@ -40,7 +41,16 @@ fun ImageView.loadUrl(url: String){
 
 // inline en vez de hacer una llamada a la función
 // se sustituye esa llamada por el código que hay dentro de esa función
-inline fun <reified T: Activity> Context.startActivity() {
-    val intent = Intent(this, T::class.java)
-    startActivity(intent)
+inline fun <reified T: Activity> Context.startActivity(vararg pairs: Pair<String, Any?>) {
+    //val bundle = bundleOf(*pairs)
+    //val intent = Intent(this, T::class.java)
+    //intent.putExtras(bundle)
+    //startActivity(intent)
+
+    //lo mismo que antes pero en una línea
+    Intent(this, T::class.java)
+        .apply {
+            putExtras(bundleOf(*pairs))
+        }
+        .also(::startActivity)
 }

@@ -2,6 +2,7 @@ package com.example.myapp01
 
 import android.app.Activity
 import android.content.Context
+import android.util.Log
 import android.widget.Toast
 import kotlin.coroutines.coroutineContext
 
@@ -33,6 +34,13 @@ abstract class Person2(name: String, val age: Int) {
         this.name = name
         this.age = age
     }*/
+}
+
+fun nulo(){
+    val x: Int? = null
+    val l: Long = if (x != null) x.toLong() else 0
+    val l1: Long = x?.toLong() ?: 0
+    val l2: Long? = x?.toLong()
 }
 
 fun test(){

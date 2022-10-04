@@ -19,7 +19,7 @@ class MainActivity : AppCompatActivity(), Logger{//, Listener  {
     //private lateinit var message: TextView
     //private lateinit var button: Button
 
-    private val adapter = MediaAdapter{ toast(it.title) }
+    private val adapter = MediaAdapter{ startActivity<DetailActivity>(DetailActivity.EXTRA_ID to it.id) }
 
 
     //private lateinit var mRecyclerView: RecyclerView
